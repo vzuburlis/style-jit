@@ -1,0 +1,17 @@
+{
+  "name": "vzuburlis/style-jit",
+  "require-dev": {
+      "phpunit/phpunit": "^9.1"
+  },
+  "authors": [
+      {
+          "name": "Vasilis Zoumpourlis",
+          "email": "v.zuburlis@gmail.com"
+      }
+  ],
+  "autoload":{
+    "classmap": [
+      "src/StyleJit.php"
+    ]
+  }  
+}
