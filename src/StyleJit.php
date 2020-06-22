@@ -4,10 +4,13 @@ namespace StyleJit;
 
 class StyleJit
 {
-    public $path = "";
-    public $refresh = false;
+    static public $path = "";
+    static public $refresh = false;
+    static private $style = "";
+    static private $classMap = [];
+    static private $mediaMap = [];
 
-    function fileName()
+    static function fileName()
     {
         $fileName = $_SERVER['REQUEST_URI'].'.css';
 
@@ -25,9 +28,72 @@ class StyleJit
         return $fileName;
     }
 
-    function renderStyle($markup)
+    static function renderStyle($markup)
     {
-       // return the css
-       return "";
+        // return the css
+        $output_array = [];
+        preg_match_all('/class="[^"]+"/', $markup, $output_array);
+        foreach($output_array[0] as $classQuote) {
+            $classList = explode(' ', substr($classQuote, 7, -1));
+            foreach($classList as $className) {
+                self::addClass($className);
+            }
+        }
+        return self::$style;
+    }
+
+    static function addClass($name)
+    {
+        if(isset(self::$classMap[$name])) {
+          return;
+        }
+
+        $string = $name;
+        $attribute = "";
+        $value = "";
+        $pseudo = "";
+        $media = "";
+        $classValue = "";
+        // name should have this format
+        // attribute:value[:pseudo-elements][@media]
+        $pos = strpos($string, ':');
+        if($pos === false) {
+          // this is a semantic name
+          // TODO get the class from a css resource
+        } else {
+          $attribute = substr($string, 0, $pos);
+          $value = $string = substr($string, $pos+1);
+        }
+        // check if follows pseudo-elements, keep first ':'
+        $pos = strpos($string, ':');
+        if($pos !== false) {
+          $value = substr($value, 0, $pos);
+          $pseudo = $string = substr($string, $pos);
+        }
+        // check if follows a media key
+        $pos = strpos($string, '@');
+        if($pos !== false) {
+          $value = substr($value, 0, $pos);
+          $pseudo = $string = substr($string, $pos);
+        }
+
+        $attribute = self::findBestAttribute($attribute);
+
+        $classValue = $attribute.':'.$value;
+        
+        $definition = '.'.strtr($name, [':'=>'\\:']).$pseudo.'{'.$classValue.'}';
+        if($media !== "") {
+          // TODO seperate media clausures to reduce output size
+          $definition = '@media '.(self::$mediaMap[$media]??$media).$definition.'}';
+        }
+
+        self::$style .= $definition;
+        self::$classMap[$name] = $classValue;
+    }
+
+    static function findBestAttribute($attr)
+    {
+      // TODO find the best fit attribute from a list
+      return $attr;
     }
 }
