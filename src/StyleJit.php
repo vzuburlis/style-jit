@@ -9,6 +9,7 @@ class StyleJit
     static private $style = "";
     static private $classMap = [];
     static private $mediaMap = [];
+    static private $cssProperties = [];
 
     static function fileName()
     {
@@ -31,7 +32,10 @@ class StyleJit
     static function renderStyle($markup)
     {
         // return the css
+        self::$style = "";
+        self::$cssProperties = include(__DIR__.'/data/css-properties.php');
         $output_array = [];
+
         preg_match_all('/class="[^"]+"/', $markup, $output_array);
         foreach($output_array[0] as $classQuote) {
             $classList = explode(' ', substr($classQuote, 7, -1));
@@ -93,7 +97,27 @@ class StyleJit
 
     static function findBestAttribute($attr)
     {
-      // TODO find the best fit attribute from a list
+      // find the best fit attribute from a list
+      if(isset(self::$cssProperties[$attr])) {
+        return $attr;
+      }
+
+      $output_array = [];
+      $regex = '';
+      $length = strlen($attr);
+      for($i=0; $i<$length; $i++){   
+        $regex .= '['.$attr[$i].'](.*)';
+      }
+
+      foreach(self::$cssProperties as $property) {
+        if($attr === $property) return $property;
+        preg_match('/'.$regex.'/', $property, $output_array);
+        if(!empty($output_array) && $attr[0]===$property[0]) {
+          if(substr_count($attr, '-')===substr_count($property, '-')) {
+            return $property;
+          }
+        }
+      }
       return $attr;
     }
 }
