@@ -15,6 +15,11 @@ class ClassStyleJit extends TestCase
     $this->assertEquals('.pad\\:1em{padding:1em}', $css);
     $css = StyleJit\StyleJit::renderStyle('<a class="p-lft:1em">Save</a>');
     $this->assertEquals('.p-lft\\:1em{padding-left:1em}', $css);
-	}
+    $css = StyleJit\StyleJit::renderStyle('<a class="p-l:1em">Save</a>');
+    $this->assertEquals('.p-l\\:1em{padding-left:1em}', $css);
+
+    $css = StyleJit\StyleJit::renderStyle('<div class="dis:grid gr-t-c:1fr_1fr">Save</a>');
+    $this->assertEquals('.dis\\:grid{display:grid}.gr-t-c\\:1fr_1fr{grid-template-columns:1fr 1fr}', $css);
+  }
 
 }

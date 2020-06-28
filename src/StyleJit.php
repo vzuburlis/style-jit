@@ -82,6 +82,7 @@ class StyleJit
         }
 
         $attribute = self::findBestAttribute($attribute);
+        $value = self::readAttrubuteValue($value);
 
         $classValue = $attribute.':'.$value;
         
@@ -105,7 +106,12 @@ class StyleJit
       $output_array = [];
       $regex = '';
       $length = strlen($attr);
-      for($i=0; $i<$length; $i++){   
+      for($i=0; $i<$length; $i++){
+        if($attr[$i]==='-' && $i<$length-1) {
+          // after dash expect that the word starts with next character 
+          $regex .= '[-]';
+          $i++;
+        }
         $regex .= '['.$attr[$i].'](.*)';
       }
 
@@ -119,5 +125,16 @@ class StyleJit
         }
       }
       return $attr;
+    }
+
+    static function readAttrubuteValue($value) {
+      // add the spaces and commas in attributes
+      $value = strtr($value, ['_'=>' ','\\,'=>',']);
+
+      if($value[0]==='-') {
+        $value = 'var('.$value.')';
+      }
+
+      return $value;
     }
 }
