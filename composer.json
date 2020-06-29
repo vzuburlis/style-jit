@@ -1,5 +1,11 @@
 {
   "name": "vzuburlis/style-jit",
+  "type": "library",
+  "description": "A library which generates a css file by parsing classes defined in HTML.",
+  "license": "MIT",
+  "require": {
+    "php": "^7.3"
+  },
   "require-dev": {
       "phpunit/phpunit": "^9.1"
   },
@@ -9,9 +15,9 @@
           "email": "v.zuburlis@gmail.com"
       }
   ],
-  "autoload":{
-    "classmap": [
-      "src/StyleJit.php"
-    ]
-  }  
+  "autoload": {
+    "psr-4": {
+      "StyleJit\\": "src/"
+    }
+  }
 }
