@@ -14,5 +14,5 @@ echo '<link href="assets/' . $cssFile . '" type="stylesheet">';
 
 ## Run the tests
 ```
-./vendor/phpunit/phpunit/phpunit tests/classStyleJit.php
+./vendor/phpunit/phpunit/phpunit tests/StyleJitTest.php
 ```
