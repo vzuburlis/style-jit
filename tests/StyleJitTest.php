@@ -1,9 +1,13 @@
 <?php
 
-include_once(__DIR__.'/../vendor/autoload.php');
-include_once(__DIR__.'/../src/StyleJit.php');
+include_once __DIR__.'/../vendor/autoload.php';
+include_once __DIR__.'/../src/StyleJit.php';
 use PHPUnit\Framework\TestCase;
+use StyleJit\StyleJit;
 
+/**
+ * @covers \StyleJit\StyleJit
+ */
 class StyleJitTest extends TestCase
 {
 
