@@ -27,9 +27,9 @@ class StyleJit
         }
 
         // render the stylesheet on exit of the script
-        register_shutdown_function(function () {
+        register_shutdown_function(static function () use ($fileName) {
             $output = ob_get_contents();
-            $style = renderStyle($output);
+            $style = self::renderStyle($output);
             file_put_contents(self::$path.'/'.$fileName, $style);
         });
 
@@ -90,13 +90,13 @@ class StyleJit
         }
 
         $attribute = self::findBestAttribute($attribute);
-        $value = self::readAttrubuteValue($value);
+        $value = self::readAttributeValue($value);
 
         $classValue = $attribute.':'.$value;
 
         $definition = '.'.strtr($name, [':' => '\\:']).$pseudo.'{'.$classValue.'}';
         if ($media !== '') {
-            // TODO seperate media clausures to reduce output size
+            // TODO separate media closures to reduce output size
             $definition = '@media '.(self::$mediaMap[$media] ?? $media).$definition.'}';
         }
 
@@ -128,22 +128,23 @@ class StyleJit
                 return $property;
             }
             preg_match('/'.$regex.'/', $property, $output_array);
-            if (!empty($output_array) && $attr[0] === $property[0]) {
-                if (substr_count($attr, '-') === substr_count($property, '-')) {
-                    return $property;
-                }
+            if (
+                !empty($output_array) && $attr[0] === $property[0] &&
+                substr_count($attr, '-') === substr_count($property, '-')
+            ) {
+                return $property;
             }
         }
 
         return $attr;
     }
 
-    public static function readAttrubuteValue(string $value): string
+    public static function readAttributeValue(string $value): string
     {
         // add the spaces and commas in attributes
         $value = strtr($value, ['_' => ' ', '\\,' => ',']);
 
-        if ($value[0] === '-') {
+        if (strpos($value, '-') === 0) {
             $value = 'var('.$value.')';
         }
 
