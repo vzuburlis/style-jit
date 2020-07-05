@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 include_once __DIR__.'/../vendor/autoload.php';
 include_once __DIR__.'/../src/StyleJit.php';
 use PHPUnit\Framework\TestCase;
@@ -10,7 +12,7 @@ use StyleJit\StyleJit;
  */
 class StyleJitTest extends TestCase
 {
-    public function testRenderStyle()
+    public function testRenderStyle(): void
     {
         $css = StyleJit::renderStyle('<a class="padding:1em">Save</a>');
         $this->assertEquals('.padding\\:1em{padding:1em}', $css);
