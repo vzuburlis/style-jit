@@ -34,10 +34,10 @@ class StyleJit
         // return the css
         self::$style = "";
         self::$cssProperties = include(__DIR__.'/data/css-properties.php');
-        $output_array = [];
 
-        preg_match_all('/class="[^"]+"/', $markup, $output_array);
-        foreach($output_array[0] as $classQuote) {
+        $classQuotes = self::findClassQuotes($markup);
+
+        foreach($classQuotes as $classQuote) {
             $classList = explode(' ', substr($classQuote, 7, -1));
             foreach($classList as $className) {
                 self::addClass($className);
@@ -137,4 +137,13 @@ class StyleJit
 
       return $value;
     }
+
+    static function findClassQuotes($markup) {
+      $array1 = [];
+      $array2 = [];
+      preg_match_all('/class="[^"]+"/', $markup, $array1);
+      preg_match_all("/class='[^']+'/", $markup, $array2);
+      return array_merge($array1[0], $array2[0]);
+    }        
+
 }
