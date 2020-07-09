@@ -18,7 +18,6 @@ class StyleJit
 
     private static $cssProperties = [];
 
-
     public static function setOptions($args): void
     {
         if (isset($args['class'])) {
@@ -60,7 +59,7 @@ class StyleJit
         self::$cssProperties = include __DIR__.'/data/css-properties.php';
 
         $classQuotes = self::findClassQuotes($markup);
-        foreach ($output_array[0] as $classQuote) {
+        foreach ($classQuotes as $classQuote) {
             $classList = explode(' ', substr($classQuote, 7, -1));
             foreach ($classList as $className) {
                 self::addClass($className);
@@ -166,12 +165,13 @@ class StyleJit
         return $value;
     }
 
-    static function findClassQuotes(string $markup): array
+    public static function findClassQuotes(string $markup): array
     {
         $array1 = [];
         $array2 = [];
         preg_match_all('/class="[^"]+"/', $markup, $array1);
         preg_match_all("/class='[^']+'/", $markup, $array2);
+
         return array_merge($array1[0], $array2[0]);
     }
 }
