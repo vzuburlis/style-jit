@@ -18,6 +18,23 @@ class StyleJit
 
     private static $cssProperties = [];
 
+
+    public static function setOptions($args): void
+    {
+        if (isset($args['class'])) {
+            self::$classMap = $args['class'];
+        }
+        if (isset($args['media'])) {
+            self::$mediaMap = $args['media'];
+        }
+        if (isset($args['path'])) {
+            self::$path = $args['path'];
+        }
+        if (isset($args['refresh'])) {
+            self::$refresh = $args['refresh'];
+        }
+    }
+
     public static function fileName(): string
     {
         $fileName = $_SERVER['REQUEST_URI'].'.css';
