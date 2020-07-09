@@ -12,6 +12,11 @@ use StyleJit\StyleJit;
  */
 class StyleJitTest extends TestCase
 {
+    public function testFileName(): void
+    {
+
+    }
+
     public function testRenderStyle(): void
     {
         // double and single quotes
@@ -35,7 +40,7 @@ class StyleJitTest extends TestCase
         $this->assertEquals('.p-l\\:1em{padding-left:1em}', $css);
 
         // value attributes
-        $css = StyleJit::renderStyle('<div class="dis:grid gr-t-c:1fr_1fr">Save</a>');
+        $css = StyleJit::renderStyle('<div class="dis:grid gr-t-c:1fr_1fr">Save</div>');
         $this->assertEquals('.dis\\:grid{display:grid}.gr-t-c\\:1fr_1fr{grid-template-columns:1fr 1fr}', $css);
     }
 }
