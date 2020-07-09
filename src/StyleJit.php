@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace StyleJit;
 
 class StyleJit
@@ -16,7 +18,8 @@ class StyleJit
 
     private static $cssProperties = [];
 
-    public static function setOptions($args)
+
+    public static function setOptions($args): void
     {
         if (isset($args['class'])) {
             self::$classMap = $args['class'];
@@ -32,7 +35,7 @@ class StyleJit
         }
     }
 
-    public static function fileName()
+    public static function fileName(): string
     {
         $fileName = $_SERVER['REQUEST_URI'].'.css';
 
@@ -50,7 +53,7 @@ class StyleJit
         return $fileName;
     }
 
-    public static function renderStyle($markup)
+    public static function renderStyle(string $markup): string
     {
         // return the css
         self::$style = '';
@@ -68,7 +71,7 @@ class StyleJit
         return self::$style;
     }
 
-    public static function addClass($name)
+    public static function addClass(string $name): void
     {
         if (isset(self::$classMap[$name])) {
             return;
@@ -118,7 +121,7 @@ class StyleJit
         self::$classMap[$name] = $classValue;
     }
 
-    public static function findBestAttribute($attr)
+    public static function findBestAttribute(string $attr)
     {
         // find the best fit attribute from a list
         if (isset(self::$cssProperties[$attr])) {
@@ -152,7 +155,7 @@ class StyleJit
         return $attr;
     }
 
-    public static function readAttrubuteValue($value)
+    public static function readAttrubuteValue(string $value): string
     {
         // add the spaces and commas in attributes
         $value = strtr($value, ['_' => ' ', '\\,' => ',']);
