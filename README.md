@@ -16,3 +16,8 @@ echo '<link href="assets/' . $cssFile . '" type="stylesheet">';
 ```
 ./vendor/phpunit/phpunit/phpunit tests/StyleJitTest.php
 ```
+
+## Run php PHP-CS-Fixer
+```
+php-cs-fixer fix
+```
