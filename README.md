@@ -3,13 +3,20 @@ A php parser to create stylesheet files just in time
 
 
 ## How to use
-```
-StyleJit\StyleJit::$path = "assets"; // set the path to save the stylesheets
-StyleJit\StyleJit::$refresh = true;  // comment this on production
+```php
+<?php
 
-...
-$cssFile = StyleJit\StyleJit::fileName();
-echo '<link href="assets/' . $cssFile . '" type="stylesheet">';
+use StyleJit\StyleJit;
+
+include_once 'vendor/autoload.php'; // autoload resources from composer
+
+$_SERVER['REQUEST_URI'] = 'fixtures/example.php';
+
+StyleJit::$path = __DIR__.'/assets'; // set the path to save the stylesheets
+StyleJit::$refresh = true;  // comment this on production
+
+// ...
+echo '<link href="assets/' . StyleJit::fileName() . '" type="stylesheet">';
 ```
 
 ## Run the tests

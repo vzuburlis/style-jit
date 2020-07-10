@@ -3,20 +3,33 @@
 declare(strict_types=1);
 
 include_once __DIR__.'/../vendor/autoload.php';
-include_once __DIR__.'/../src/StyleJit.php';
 use PHPUnit\Framework\TestCase;
 use StyleJit\StyleJit;
 
 /**
- * @covers \StyleJit\StyleJit
+ * @coversDefaultClass  \StyleJit\StyleJit
  */
 class StyleJitTest extends TestCase
 {
+    /**
+     * @covers ::fileName
+     */
     public function testFileName(): void
     {
+        ob_start();
+        passthru('php tests/fixtures/exampleTemplate.php', $exitCode);
+        $output = ob_get_clean();
 
+        $this->assertEquals(0, $exitCode);
+
+        preg_match('/<link href="(.*\.css)" type="stylesheet">/sim', $output, $matches);
+
+        $this->assertFileExists($matches[1]);
     }
 
+    /**
+     * @covers ::renderStyle
+     */
     public function testRenderStyle(): void
     {
         // double and single quotes
