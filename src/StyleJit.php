@@ -18,6 +18,8 @@ class StyleJit
 
     private static $cssProperties = [];
 
+    private static $import = [];
+
     public static function setOptions($args): void
     {
         if (isset($args['class'])) {
@@ -31,6 +33,9 @@ class StyleJit
         }
         if (isset($args['refresh'])) {
             self::$refresh = $args['refresh'];
+        }
+        if (isset($args['import'])) {
+            self::$import = $args['import'];
         }
     }
 
@@ -57,6 +62,10 @@ class StyleJit
         // return the css
         self::$style = '';
         self::$cssProperties = include __DIR__.'/data/css-properties.php';
+
+        foreach (self::$import as $file) {
+            self::$style .= '@import \''.$file.'\';';
+        }
 
         $classQuotes = self::findClassQuotes($markup);
         foreach ($classQuotes as $classQuote) {

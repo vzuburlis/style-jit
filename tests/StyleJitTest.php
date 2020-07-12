@@ -34,4 +34,11 @@ class StyleJitTest extends TestCase
     $this->assertEquals('.dis\\:grid{display:grid}.gr-t-c\\:1fr_1fr{grid-template-columns:1fr 1fr}', $css);
   }
 
+  public function testImport()
+  {
+    StyleJit::setOptions(['import'=>['style.css']]);
+    $css = StyleJit::renderStyle('<div class="dis:block">Save</a>');
+    $this->assertEquals('@import \'style.css\';.dis\\:block{display:block}', $css);
+  }
+
 }
