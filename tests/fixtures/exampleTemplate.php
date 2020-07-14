@@ -14,7 +14,7 @@ ob_start();
 <html lang="en">
     <head>
         <title>Example HTML for testing StyleJit</title>
-        <link href="<?php echo StyleJit::$path.'/'.StyleJit::fileName(); ?>" type="stylesheet">
+        <link href="<?= StyleJit::$path.'/'.StyleJit::fileName() ?>" type="stylesheet">
     </head>
     <body>
         <div><a class="padding:1em">Save</a></div>
